@@ -7,5 +7,10 @@ export const environment = {
     projectId: "de-um-tempo",
     storageBucket: "de-um-tempo.appspot.com",
     messagingSenderId: "475759243077"
+  },
+  bible: {
+    apiKey: 'JWpe50ZmWsO6xYfDCWeV6mPIopDgzGsjPpge9BpK',
+    password: '1q2w3e$R',
+    host: 'https://bibles.org/v2/versions/por-NTLH'
   }
 };

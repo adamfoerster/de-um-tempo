@@ -1,3 +1,5 @@
-<p>
-  verse works!
-</p>
+<div class="padding">
+  <mat-card *ngIf="(passage$ | async) as passage">
+    <p *ngFor="let verse of passage">{{verse.verseNum}}.&nbsp;{{verse.text}}</p>
+  </mat-card>
+</div>

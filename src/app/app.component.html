@@ -1,3 +1,26 @@
 <div class="body">
-  <app-timeline></app-timeline>
+  <mat-toolbar color="primary">
+    <mat-icon (click)="openMenu()">dehaze</mat-icon>
+    <span>&nbsp;Dê um tempo</span>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
 </div>
+<ng-template #menu>
+  <mat-nav-list role="links">
+    <a mat-list-item role="link" routerLink="timeline">
+      <mat-icon>list</mat-icon>&nbsp;Timeline
+    </a>
+    <a mat-list-item role="link" routerLink="verse">
+      <mat-icon>search</mat-icon>&nbsp;Pesquisar Verso
+    </a>
+    <!-- <a mat-list-item role="link" routerLink="">
+      <mat-icon>speaker_notes</mat-icon>&nbsp;Enviar Verso
+    </a> -->
+    <a mat-list-item role="link">
+      <mat-icon>insert_photo</mat-icon>&nbsp;Fotos
+    </a>
+    <a mat-list-item role="link">
+      <mat-icon>music_video</mat-icon>&nbsp;Músicas
+    </a>
+  </mat-nav-list>
+</ng-template>

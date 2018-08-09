@@ -1,0 +1,7 @@
+.music{
+  text-align: center;
+  padding: 20px;
+  img {
+    max-width: calc(100% - 40px);
+  }
+}
