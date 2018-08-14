@@ -1,5 +1,13 @@
+<mat-toolbar>
+  <mat-select placeholder="Livro" value="Psalms">
+    <mat-option value="Psalms">Salmos</mat-option>
+  </mat-select>
+  <mat-select placeholder="Capítulo" value="103" (selectionChange)="read($event)">
+    <mat-option *ngFor="let chapter of chapters" [value]="chapter">{{chapter}}</mat-option>
+  </mat-select>
+</mat-toolbar>
 <div class="padding">
   <mat-card *ngIf="(passage$ | async) as passage">
-    <p *ngFor="let verse of passage">{{verse.verseNum}}.&nbsp;{{verse.text}}</p>
+    <p *ngFor="let verse of passage">{{verse.verseNum}}. {{verse.text}}</p>
   </mat-card>
 </div>

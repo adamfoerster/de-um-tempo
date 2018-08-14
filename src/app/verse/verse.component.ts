@@ -11,12 +11,25 @@ import { ServiceService } from '../service.service';
 })
 export class VerseComponent implements OnInit {
   passage$: Observable<any>;
+  chapters: string[] = [];
+
   constructor(public service: ServiceService) { }
 
   ngOnInit() {
-    this.passage$ = this.service.fetchPassage('Psalms103').pipe(
+    for (let i=1; i<=150; i++) {
+      this.chapters.push(i.toString());
+    }
+    this.getPassage('103');
+  }
+
+  read(e) {
+    this.getPassage(e.value);
+  }
+
+  getPassage(chapter) {
+    this.passage$ = this.service.fetchPassage(`Psalms${chapter}`).pipe(
       filter(p => !!p),
-      map((p:any[]) => {
+      map((p: any[]) => {
         const verseNums: string[] = Object.keys(p['chapter']);
         let chapter: any[] = [];
         verseNums.forEach(verse => {

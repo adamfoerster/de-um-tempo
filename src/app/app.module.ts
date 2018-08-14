@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { JsonpModule } from '@angular/http';
@@ -56,7 +57,8 @@ export const routes: Routes = [
     RouterModule.forRoot(routes),
     HttpClientModule,
     HttpClientJsonpModule,
-    JsonpModule
+    JsonpModule,
+    MatSelectModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent]
