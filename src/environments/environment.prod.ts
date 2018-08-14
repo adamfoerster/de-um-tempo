@@ -9,6 +9,6 @@ export const environment = {
     messagingSenderId: "475759243077"
   },
   bible: {
-    host: 'http://getbible.net/json?v=almeida&p='
+    host: 'https://getbible.net/json?v=almeida&p='
   }
 };
