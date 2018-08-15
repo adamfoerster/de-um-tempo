@@ -7,7 +7,7 @@ import { ServiceService } from '../service.service';
 @Component({
   selector: 'app-verse',
   templateUrl: './verse.component.html',
-  styleUrls: ['./verse.component.css']
+  styleUrls: ['./verse.component.scss']
 })
 export class VerseComponent implements OnInit {
   passage$: Observable<any>;

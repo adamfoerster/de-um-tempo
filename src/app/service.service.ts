@@ -26,6 +26,15 @@ export class ServiceService {
     return this.http.jsonp(`${env.bible.host}${book}`, 'getbible');
   }
 
+  getBooks() {
+    return [
+      {id: 'Genesis', name: 'Genesis'},
+      {id: 'Exodus', name: 'Êxodo'},
+      {id: 'Numbers', name: 'Número'},
+      {id: 'Leviticus', name: 'Levítico'},
+      {id: 'Deutoronomy', name: 'Deutoronômio'},
+    ];
+  }
   fetchPassage(passage: string) {
     let result = (response) => {console.log(response)};
     return this.http.jsonp(`${env.bible.host}${passage}`, 'getbible');
