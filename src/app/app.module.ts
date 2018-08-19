@@ -12,6 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { JsonpModule } from '@angular/http';
 
@@ -59,6 +60,7 @@ export const routes: Routes = [
     HttpClientJsonpModule,
     JsonpModule,
     MatSelectModule,
+    MatSnackBarModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent]

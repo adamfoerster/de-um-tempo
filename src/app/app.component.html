@@ -11,7 +11,7 @@
       <mat-icon>list</mat-icon>&nbsp;Timeline
     </a>
     <a mat-list-item role="link" routerLink="verse">
-      <mat-icon>search</mat-icon>&nbsp;Pesquisar Verso
+      <mat-icon>library_books</mat-icon>&nbsp;Bíblia
     </a>
     <!-- <a mat-list-item role="link" routerLink="">
       <mat-icon>speaker_notes</mat-icon>&nbsp;Enviar Verso
@@ -22,5 +22,12 @@
     <a mat-list-item role="link">
       <mat-icon>music_video</mat-icon>&nbsp;Músicas
     </a>
+    <a *ngIf="!(service.user | async)" mat-list-item role="link" (click)="service.login()">
+      <mat-icon>input</mat-icon>&nbsp;Login
+    </a>
+    <a *ngIf="service.user | async" mat-list-item role="link" (click)="service.logout()">
+      <mat-icon>directions_run</mat-icon>&nbsp;Logout
+    </a>
+
   </mat-nav-list>
 </ng-template>
