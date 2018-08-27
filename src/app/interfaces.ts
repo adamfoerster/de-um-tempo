@@ -15,6 +15,11 @@ export interface Book {
   book: Chapter[];
 }
 
+export interface BookListItem {
+  id: string;
+  name: string;
+}
+
 export interface Chapter {
   chapter_nr: number;
   chapter: Verse[];

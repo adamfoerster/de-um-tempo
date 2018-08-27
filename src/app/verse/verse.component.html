@@ -1,12 +1,18 @@
 <mat-toolbar>
-  <mat-select placeholder="Livro" value="Psalms" class="col70">
-    <mat-option value="Psalms">Salmos</mat-option>
+  <mat-select #bookinput placeholder="Livro" value="Psalms" class="col70"
+    (selectionChange)="selectedChapter=1;read(bookinput.value)">
+    <mat-option *ngFor="let book of books" [value]="book.id">
+      {{book.name}}
+    </mat-option>
   </mat-select>
-  <mat-select placeholder="Capítulo" value="103" class="col30" (selectionChange)="read($event)">
-    <mat-option *ngFor="let chapter of chapters" [value]="chapter">{{chapter}}</mat-option>
+  <mat-select *ngIf="chapter$|async as chapters" #chapterInput placeholder="Capítulo"
+    [value]="selectedChapter" class="col30"
+    (selectionChange)="selectedChapter=$event.value;read(bookinput.value)">
+    <mat-option *ngFor="let chapter of chapters" [value]="chapter.chapter_nr">
+      {{chapter.chapter_nr}}
+    </mat-option>
   </mat-select>
 </mat-toolbar>
-<pre>{{book|json}}</pre>
 <div class="padding">
   <mat-card *ngIf="(passage$ | async)?.chapter as passage">
     <p *ngFor="let verse of passage | keyvalue">{{verse.value.verse_nr}}. {{verse.value.verse}}</p>

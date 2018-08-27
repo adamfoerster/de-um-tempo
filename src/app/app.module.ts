@@ -44,7 +44,7 @@ export const routes: Routes = [
 	],
 	imports: [
 		AngularFireModule.initializeApp(environment.firebase),
-		AngularFirestoreModule,
+		AngularFirestoreModule.enablePersistence(),
 		AngularFireStorageModule,
 		AngularFireAuthModule,
 		BrowserModule,

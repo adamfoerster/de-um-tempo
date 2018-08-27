@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { ServiceService } from '../service.service';
-import { Chapter } from '../interfaces';
+import { Chapter, BookListItem } from '../interfaces';
 
 @Component({
   selector: 'app-verse',
@@ -12,24 +12,20 @@ import { Chapter } from '../interfaces';
 })
 export class VerseComponent implements OnInit {
   passage$: Observable<Chapter>;
-  chapters: string[] = [];
-  book: any;
+  chapter$: Observable<Chapter[]>;
+  books: BookListItem[] = [];
+  selectedChapter = 103;
 
   constructor(public service: ServiceService) { }
 
   ngOnInit() {
-    for (let i = 1; i <= 150; i++) {
-      this.chapters.push(i.toString());
-    }
-    this.passage$ = this.service.getPassage('Psalms', 103);
+    this.read('Psalms');
+    this.books = this.service.getBooks();
   }
 
-  read(e) {
-    this.getPassage(e.value);
-  }
-
-  getPassage(chapter) {
-    
+  read(bookName) {
+    this.chapter$ = this.service.getBook(bookName).pipe(map(book => book.book));
+    this.passage$ = this.service.getPassage(bookName, this.selectedChapter);
   }
 
 }

@@ -5,7 +5,7 @@
       <mat-card-title><h1>{{meeting.id}}</h1></mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>{{meeting.message}}</p>
+      <p [innerHTML]="meeting.message"></p>
       <app-music [id]="meeting.songId"></app-music>
     </mat-card-content>
     <mat-card-actions>

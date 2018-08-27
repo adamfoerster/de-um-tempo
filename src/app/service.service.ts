@@ -2,20 +2,22 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { auth } from 'firebase';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RequestOptions, Headers, Jsonp } from '@angular/http';
 import { MatBottomSheetRef } from '@angular/material';
 
-import { Meeting, Book, Chapter } from './interfaces';
+import { Meeting, Book, Chapter, BookListItem } from './interfaces';
 import { environment as env } from '../environments/environment';
+import { Logs } from 'selenium-webdriver';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
   meeting$: Observable<Meeting[]>;
+  loading: string[] = [];
   private _sheet: MatBottomSheetRef;
 
   get sheet() {
@@ -36,11 +38,13 @@ export class ServiceService {
     private jsonp: Jsonp,
     public afAuth: AngularFireAuth,
   ) {
-    this.meeting$ = this.db.collection<Meeting>('meetings').valueChanges();
+    this.meeting$ = this.db
+      .collection<Meeting>('meetings', ref => ref.orderBy('id', 'desc'))
+      .valueChanges();
   }
 
-  fetchBook(book: string): Observable<Book> {
-    return this.http.jsonp(`${env.bible.host}${book}`, 'getbible').pipe(
+  fetchBook(bookName: string): Observable<Book> {
+    return this.http.jsonp(`${env.bible.host}${bookName}`, 'getbible').pipe(
       map(book => this.mapResponseToBook(book)),
       tap((book: Book) => this.saveBookToFireStore(book))
     );
@@ -65,34 +69,77 @@ export class ServiceService {
   }
 
   saveBookToFireStore(book: Book) {
-    this.db.collection('ads').doc('ads').set({ads:1});
     if (this.user) {
-      this.db.collection('books').doc(book.book_name).set(book);
+      const bookName = book.book_name.replace(/\s/g, '');
+      this.db.collection('books').doc(bookName).set(book);
     }
   }
 
-  getBook(book_name): Observable<Book> {
-    return this.db.collection('books').doc<Book>(book_name).valueChanges();
+  getBook(bookName): Observable<Book> {
+    return this.db.collection('books').doc<Book>(bookName).valueChanges();
   }
 
   getPassage(book_name: string, chapter_nr: number): Observable<Chapter> {
     return this.getBook(book_name).pipe(
-      map(book => book.book.find(chapter => chapter.chapter_nr === chapter_nr))
+      switchMap(book => {
+        if (!book) {
+          return this.fetchFromAPI(`${book_name}`)
+            .pipe(
+              tap(bookFromAPI => this.saveBookToFireStore(bookFromAPI)),
+              map(bookFromAPI => this.findChapter(bookFromAPI.book, chapter_nr))
+            );
+        }
+        const chapters: Chapter[] = book.book as Chapter[];
+        const found: Chapter = this.findChapter(chapters, chapter_nr);
+        return of(found);
+      })
     );
   }
 
-  getBooks() {
+  findChapter(chapters: Chapter[], chapter_nr: number): Chapter {
+    return chapters
+      .find(chapter => chapter.chapter_nr === chapter_nr);
+  }
+
+  getBooks(): BookListItem[] {
     return [
       {id: 'Genesis', name: 'Genesis'},
       {id: 'Exodus', name: 'Êxodo'},
       {id: 'Numbers', name: 'Número'},
       {id: 'Leviticus', name: 'Levítico'},
       {id: 'Deutoronomy', name: 'Deutoronômio'},
+      {id: 'Psalms', name: 'Salmos'},
+      {id: 'Proverbs', name: 'Provérbios'},
+      {id: 'Matthew', name: 'Mateus'},
+      {id: 'Mark', name: 'Marcos'},
+      {id: 'Luke', name: 'Lucas'},
+      {id: 'John', name: 'João'},
+      {id: 'Acts', name: 'Atos'},
+      {id: 'Romans', name: 'Romanos'},
+      {id: '1Corinthians', name: '1a Coríntios'},
+      {id: '2Corinthians', name: '2a Coríntios'},
+      {id: 'Galatians', name: 'Gálatas'},
+      {id: 'Ephesians', name: 'Efésios'},
+      {id: 'Philippians', name: 'Filipenses'},
+      {id: 'Colossians', name: 'Colossenses'},
+      {id: '1Timothy', name: '1a Timóteo'},
+      {id: '2Timothy', name: '2a Timóteo'},
+      {id: 'Titus', name: 'Tito'},
+      {id: 'Philemon', name: 'Filemon'},
+      {id: 'James', name: 'Tiago'},
+      {id: '1Peter', name: '1a Pedro'},
+      {id: '2Peter', name: '2a Pedro'},
+      {id: '1John', name: '1a João'},
+      {id: '2John', name: '2a João'},
+      {id: '3John', name: '3a João'},
+      {id: 'Jude', name: 'Judas'},
+      {id: 'Revelation', name: 'Apocalipse'},
     ];
   }
 
-  fetchPassage(passage: string) {
-    return this.http.jsonp(`${env.bible.host}${passage}`, 'getbible');
+  fetchFromAPI(bookName: string): Observable<Book> {
+    return this.http.jsonp<Book>(`${env.bible.host}${bookName}`, 'getbible')
+      .pipe(map(book => this.mapResponseToBook(book)));
   }
 
   login() {
