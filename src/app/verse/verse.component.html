@@ -8,13 +8,16 @@
   <mat-select *ngIf="chapter$|async as chapters" #chapterInput placeholder="Capítulo"
     [value]="selectedChapter" class="col30"
     (selectionChange)="selectedChapter=$event.value;read(bookinput.value)">
-    <mat-option *ngFor="let chapter of chapters" [value]="chapter.chapter_nr">
+    <mat-option *ngFor="let chapter of chapters"
+      [value]="chapter.chapter_nr">
       {{chapter.chapter_nr}}
     </mat-option>
   </mat-select>
 </mat-toolbar>
 <div class="padding">
   <mat-card *ngIf="(passage$ | async)?.chapter as passage">
-    <p *ngFor="let verse of passage | keyvalue">{{verse.value.verse_nr}}. {{verse.value.verse}}</p>
+    <p *ngFor="let verse of passage">
+      <strong>{{verse.verse_nr}}</strong> {{verse.verse}}
+    </p>
   </mat-card>
 </div>

@@ -24,7 +24,8 @@ export class VerseComponent implements OnInit {
   }
 
   read(bookName) {
-    this.chapter$ = this.service.getBook(bookName).pipe(map(book => book.book));
+    this.chapter$ = this.service.getBook(bookName)
+      .pipe(map(book => book.book));
     this.passage$ = this.service.getPassage(bookName, this.selectedChapter);
   }
 

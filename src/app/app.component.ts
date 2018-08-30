@@ -13,20 +13,23 @@ import { ServiceService } from './service.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild('menu') menu: TemplateRef<any>;
+  @ViewChild('menu')
+  menu: TemplateRef<any>;
 
   constructor(
     private bottomSheet: MatBottomSheet,
     public service: ServiceService,
     private router: Router,
     private swUpdate: SwUpdate,
-    public snackBar: MatSnackBar,
+    public snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.swUpdate.available.subscribe(_ => {
-      let snackBarRef = this.snackBar
-        .open('Newer version of the app is available', 'Refresh');
+      const snackBarRef = this.snackBar.open(
+        'Newer version of the app is available',
+        'Refresh'
+      );
       snackBarRef.onAction().subscribe(() => {
         window.location.reload();
       });
@@ -34,7 +37,9 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(_ => {
-        if (this.service.sheet) this.service.sheet.dismiss();
+        if (this.service.sheet) {
+          this.service.sheet.dismiss();
+        }
       });
   }
 
