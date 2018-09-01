@@ -1,7 +1,14 @@
-.col70{
+.col70 {
   width: calc(70% - 10px);
   margin-right: 20px;
 }
-.col30{
+.col30 {
   width: calc(30% - 10px);
+}
+.mat-card p{
+  padding: 3px 8px;
+}
+.selected {
+  background-color: #cfe;
+  border-radius: 5px;
 }

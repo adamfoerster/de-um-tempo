@@ -29,3 +29,8 @@ export interface Verse {
   verse_nr: number;
   verse: string;
 }
+
+export interface Message {
+  email: string;
+  passage: string;
+}

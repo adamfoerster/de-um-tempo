@@ -11,7 +11,7 @@ export class TimelineComponent implements OnInit {
   constructor(public service: ServiceService) { }
 
   ngOnInit() {
-    this.service.meeting$.subscribe(meeting => console.log(meeting));
+
   }
 
 }
