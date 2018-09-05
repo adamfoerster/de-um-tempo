@@ -19,6 +19,9 @@
     <span *ngFor="let selected of selectedVerses">
       {{selected}}
     </span>
+    <div>
+        <button mat-raised-button (click)="addVerses()">Enviar Versos</button>
+      </div>
   </div>
   <div class="padding versearea">
     <mat-card *ngIf="(passage$ | async)?.chapter as passage">
@@ -28,9 +31,6 @@
         <strong>{{verse.verse_nr}}</strong> {{verse.verse}}
     </span>
     </mat-card>
-  </div>
-  <div>
-    <button mat-raised-button (click)="addVerses()">Enviar Versos</button>
   </div>
 </div>
 

@@ -34,4 +34,6 @@ export class VerseComponent implements OnInit {
     this.selectedVerses.push(verse);
   }
 
+  addVerses() {}
+
 }
