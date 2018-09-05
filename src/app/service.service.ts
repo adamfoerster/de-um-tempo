@@ -4,7 +4,7 @@ import {
 } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { auth } from 'firebase';
-import { map, tap, switchMap } from 'rxjs/operators';
+import { map, tap, switchMap, first } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, empty } from 'rxjs';
 import { MatBottomSheetRef } from '@angular/material';

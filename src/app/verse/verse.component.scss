@@ -5,10 +5,25 @@
 .col30 {
   width: calc(30% - 10px);
 }
-.mat-card p{
-  padding: 3px 8px;
+.mat-card span{
+  text-justify: distribute;
+  padding: 8px 8px;
+  line-height: 2em;
+  margin: .2em 0;
+  cursor: pointer;
 }
 .selected {
-  background-color: #cfe;
+  background-color: #cfc;
   border-radius: 5px;
+}
+
+.versearea {
+  height: calc(100vh - 120px);
+  overflow: auto;
+}
+
+.versecontainer{
+  display: fixed;
+  height: calc(100vh - 60px);
+  overflow: auto;
 }

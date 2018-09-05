@@ -15,6 +15,7 @@ export class VerseComponent implements OnInit {
   chapter$: Observable<Chapter[]>;
   books: BookListItem[] = [];
   selectedChapter = 103;
+  selectedVerses: number[] = [];
 
   constructor(public service: ServiceService) { }
 
@@ -27,6 +28,10 @@ export class VerseComponent implements OnInit {
     this.chapter$ = this.service.getBook(bookName)
       .pipe(map(book => book.book));
     this.passage$ = this.service.getPassage(bookName, this.selectedChapter);
+  }
+
+  select(verse) {
+    this.selectedVerses.push(verse);
   }
 
 }

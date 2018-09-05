@@ -3,8 +3,15 @@
   max-width: 1024px;
   box-sizing: border-box;
   margin: 0 auto;
+  height: 100vh;
+  display: fixed;
 
   .mat-icon{
     cursor: pointer;
+  }
+
+  .mainarea {
+    height: calc(100vh - 60px);
+    overflow: auto;
   }
 }

@@ -1,26 +1,36 @@
-<mat-toolbar>
-  <mat-select #bookinput placeholder="Livro" value="Psalms" class="col70"
-    (selectionChange)="selectedChapter=1;read(bookinput.value)">
-    <mat-option *ngFor="let book of books" [value]="book.id">
-      {{book.name}}
-    </mat-option>
-  </mat-select>
-  <mat-select *ngIf="chapter$|async as chapters" #chapterInput placeholder="Capítulo"
-    [value]="selectedChapter" class="col30"
-    (selectionChange)="selectedChapter=$event.value;read(bookinput.value)">
-    <mat-option *ngFor="let chapter of chapters"
-      [value]="chapter.chapter_nr">
-      {{chapter.chapter_nr}}
-    </mat-option>
-  </mat-select>
-</mat-toolbar>
-<div class="padding">
-  <mat-card *ngIf="(passage$ | async)?.chapter as passage">
-    <p *ngFor="let verse of passage">
-      <strong>{{verse.verse_nr}}</strong> {{verse.verse}}
-    </p>
-  </mat-card>
+<div class="versecontainer">
+  <mat-toolbar>
+    <mat-select #bookinput placeholder="Livro" value="Psalms" class="col70"
+      (selectionChange)="selectedChapter=1;read(bookinput.value)">
+      <mat-option *ngFor="let book of books" [value]="book.id">
+        {{book.name}}
+      </mat-option>
+    </mat-select>
+    <mat-select *ngIf="chapter$|async as chapters" #chapterInput placeholder="Capítulo"
+      [value]="selectedChapter" class="col30"
+      (selectionChange)="selectedChapter=$event.value;read(bookinput.value)">
+      <mat-option *ngFor="let chapter of chapters"
+        [value]="chapter.chapter_nr">
+        {{chapter.chapter_nr}}
+      </mat-option>
+    </mat-select>
+  </mat-toolbar>
+  <div>Versos selecionados
+    <span *ngFor="let selected of selectedVerses">
+      {{selected}}
+    </span>
+  </div>
+  <div class="padding versearea">
+    <mat-card *ngIf="(passage$ | async)?.chapter as passage">
+      <span *ngFor="let verse of passage"
+        (click)="select(verse.verse_nr)"
+        [ngClass]="{'selected': selectedVerses.includes(verse.verse_nr)}">
+        <strong>{{verse.verse_nr}}</strong> {{verse.verse}}
+    </span>
+    </mat-card>
+  </div>
+  <div>
+    <button mat-raised-button (click)="addVerses()">Enviar Versos</button>
+  </div>
 </div>
-<div>
-  <button mat-raised-button (click)="addVerses()">Enviar Versos</button>
-</div>
+

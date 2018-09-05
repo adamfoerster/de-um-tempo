@@ -3,7 +3,9 @@
     <mat-icon (click)="openMenu()">dehaze</mat-icon>
     <span>&nbsp;Dê um tempo</span>
   </mat-toolbar>
-  <router-outlet></router-outlet>
+  <div class="mainarea">
+    <router-outlet></router-outlet>
+  </div>
 </div>
 <ng-template #menu>
   <mat-nav-list role="links">
