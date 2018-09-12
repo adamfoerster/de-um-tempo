@@ -34,3 +34,8 @@ export interface Message {
   email: string;
   passage: string;
 }
+
+export interface Reference {
+  reference: string;
+  verses: Verse[];
+}

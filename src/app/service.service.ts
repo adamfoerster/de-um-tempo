@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore
-} from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { auth } from 'firebase';
-import { map, tap, switchMap, first } from 'rxjs/operators';
+import { map, tap, switchMap, first, shareReplay } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, empty } from 'rxjs';
 import { MatBottomSheetRef } from '@angular/material';
 
-import { Meeting, Book, Chapter, BookListItem } from './interfaces';
+import { Meeting, Book, Chapter, BookListItem, Verse, Reference } from './interfaces';
 import { environment as env } from '../environments/environment';
 
 @Injectable({
@@ -93,10 +91,13 @@ export class ServiceService {
       .collection('books')
       .doc<Book>(bookName)
       .valueChanges()
-      .pipe(map(book => this.mapResponseToBook(book)));
+      .pipe(
+        shareReplay(1),
+        map(book => this.mapResponseToBook(book))
+      );
   }
 
-  getPassage(book_name: string, chapter_nr: number): Observable<Chapter> {
+  getChapter(book_name: string, chapter_nr: number): Observable<Chapter> {
     return this.getBook(book_name).pipe(
       switchMap(book => {
         if (!book) {
@@ -112,8 +113,23 @@ export class ServiceService {
     );
   }
 
+  getVerse(book: string, chapter: number, verse: number): Observable<Verse> {
+    return this.getChapter(book, chapter).pipe(
+      map(c => c.chapter.find(v => v.verse_nr === verse))
+    );
+  }
+
   findChapter(chapters: Chapter[], chapter_nr: number): Chapter {
     return chapters.find(chapter => chapter.chapter_nr === chapter_nr);
+  }
+
+  sendVerses(ref: Reference) {
+    this.user.pipe(first()).subscribe(user => {
+      this.db
+        .collection('from-users')
+        .doc(user.email)
+        .set(ref);
+    });
   }
 
   getBooks(): BookListItem[] {
@@ -161,6 +177,7 @@ export class ServiceService {
   login() {
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
   }
+
   logout() {
     this.afAuth.auth.signOut();
   }
