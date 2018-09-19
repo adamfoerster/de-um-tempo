@@ -4,10 +4,17 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { auth } from 'firebase';
 import { map, tap, switchMap, first, shareReplay } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, empty } from 'rxjs';
+import { Observable, of, empty, combineLatest } from 'rxjs';
 import { MatBottomSheetRef } from '@angular/material';
 
-import { Meeting, Book, Chapter, BookListItem, Verse, Reference } from './interfaces';
+import {
+  Meeting,
+  Book,
+  Chapter,
+  BookListItem,
+  Verse,
+  Reference
+} from './interfaces';
 import { environment as env } from '../environments/environment';
 
 @Injectable({
@@ -27,7 +34,7 @@ export class ServiceService {
   }
 
   get user() {
-    return this.afAuth.user;
+    return this.afAuth.user.pipe(shareReplay(1));
   }
 
   constructor(
@@ -123,13 +130,32 @@ export class ServiceService {
     return chapters.find(chapter => chapter.chapter_nr === chapter_nr);
   }
 
+  getReferencesFromUser(email: string) {
+    return this.db
+      .collection('from-users')
+      .doc(email)
+      .valueChanges()
+      .pipe(first());
+  }
+
   sendVerses(ref: Reference) {
-    this.user.pipe(first()).subscribe(user => {
-      this.db
-        .collection('from-users')
-        .doc(user.email)
-        .set(ref);
-    });
+    this.user
+      .pipe(
+        first(),
+        switchMap(user => this.getReferencesFromUser(user.email))
+      )
+      .subscribe(references => {
+        combineLatest(this.user.pipe(first()), of(references)).subscribe(
+          combo => {
+            const user = combo[0];
+            const refs = combo[1] ? combo[1]['references'] : [];
+            this.db
+              .collection('from-users')
+              .doc(user.email)
+              .set({ email: user.email, references: [...refs, ref] });
+          }
+        );
+      });
   }
 
   getBooks(): BookListItem[] {

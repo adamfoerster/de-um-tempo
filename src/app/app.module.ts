@@ -24,6 +24,7 @@ import { MusicComponent } from './music/music.component';
 import { TextComponent } from './text/text.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { PassagesComponent } from './passages/passages.component';
 
 export const routes: Routes = [
   { path: '', component: TimelineComponent },
@@ -31,38 +32,44 @@ export const routes: Routes = [
   { path: 'timeline/:id', component: TimelineComponent },
   { path: 'verse', component: VerseComponent },
   { path: 'verse/:book/:chapter/:verse', component: VerseComponent },
+  { path: 'passages', component: PassagesComponent }
 ];
 
 @NgModule({
-	declarations: [
-		AppComponent,
-		PhotoComponent,
-		VerseComponent,
-		MusicComponent,
-		TextComponent,
-		TimelineComponent
-	],
-	imports: [
-		AngularFireModule.initializeApp(environment.firebase),
-		AngularFirestoreModule.enablePersistence(),
-		AngularFireStorageModule,
-		AngularFireAuthModule,
-		BrowserModule,
-		BrowserAnimationsModule,
-		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
-		MatCardModule,
-		MatBottomSheetModule,
-		MatToolbarModule,
-		MatIconModule,
-		MatListModule,
+  declarations: [
+    AppComponent,
+    PhotoComponent,
+    VerseComponent,
+    MusicComponent,
+    TextComponent,
+    TimelineComponent,
+    PassagesComponent
+  ],
+  imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    // AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireAuthModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: environment.production
+    }),
+    MatCardModule,
+    MatBottomSheetModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatListModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
     HttpClientJsonpModule,
     JsonpModule,
     MatSelectModule,
-    MatSnackBarModule,
-	],
-	providers: [],
-	bootstrap: [AppComponent]
+    MatSnackBarModule
+  ],
+  providers: [],
+  entryComponents: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

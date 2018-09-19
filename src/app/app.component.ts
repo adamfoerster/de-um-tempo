@@ -13,7 +13,7 @@ import { ServiceService } from './service.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  @ViewChild('menu')
+  @ViewChild('bmenu')
   menu: TemplateRef<any>;
 
   constructor(
@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.swUpdate.available.subscribe(_ => {
       const snackBarRef = this.snackBar.open(
-        'Newer version of the app is available',
-        'Refresh'
+        'Uma versão mais nova deste APP está disponível',
+        'Atualizar'
       );
       snackBarRef.onAction().subscribe(() => {
         window.location.reload();
@@ -44,6 +44,8 @@ export class AppComponent implements OnInit {
   }
 
   openMenu() {
+    console.log(this.menu);
+
     this.service.sheet = this.bottomSheet.open(this.menu);
   }
 }

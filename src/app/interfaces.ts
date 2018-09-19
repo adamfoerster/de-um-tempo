@@ -38,4 +38,6 @@ export interface Message {
 export interface Reference {
   reference: string;
   verses: Verse[];
+  book: string;
+  chapter: number;
 }

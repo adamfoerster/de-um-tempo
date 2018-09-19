@@ -1,0 +1,16 @@
+<mat-card *ngFor="let passage of (reference$|async)?.references">
+  <mat-card-title>{{passage.book}} {{passage.chapter}}</mat-card-title>
+  <mat-card-content [innerHTML]="passage.reference"></mat-card-content>
+  <mat-card-actions>
+    <button mat-button>
+      <h3>
+        <mat-icon>delete</mat-icon><br>Remover
+      </h3>
+    </button>
+    <button mat-button>
+      <h3>
+        <mat-icon>assignment</mat-icon><br>Comentar
+      </h3>
+    </button>
+  </mat-card-actions>
+</mat-card>
